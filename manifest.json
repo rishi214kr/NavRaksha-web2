@@ -1,0 +1,82 @@
+{
+  "name": "NavRaksha - Road Safety Companion",
+  "short_name": "NavRaksha",
+  "description": "Your digital companion for road safety and emergency assistance",
+  "version": "1.0.0",
+  "start_url": "/",
+  "display": "standalone",
+  "orientation": "portrait-primary",
+  "theme_color": "#dc2626",
+  "background_color": "#ffffff",
+  "scope": "/",
+  "lang": "en",
+  "categories": ["safety", "navigation", "utilities"],
+  "icons": [
+    {
+      "src": "data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 192 192'><circle cx='96' cy='96' r='80' fill='%23dc2626'/><text x='96' y='120' text-anchor='middle' fill='white' font-size='80' font-family='Arial'>🛡️</text></svg>",
+      "sizes": "192x192",
+      "type": "image/svg+xml",
+      "purpose": "any maskable"
+    },
+    {
+      "src": "data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 512 512'><circle cx='256' cy='256' r='200' fill='%23dc2626'/><text x='256' y='320' text-anchor='middle' fill='white' font-size='200' font-family='Arial'>🛡️</text></svg>",
+      "sizes": "512x512",
+      "type": "image/svg+xml",
+      "purpose": "any maskable"
+    }
+  ],
+  "shortcuts": [
+    {
+      "name": "Emergency SOS",
+      "short_name": "SOS",
+      "description": "Quick access to emergency SOS",
+      "url": "/?action=sos",
+      "icons": [
+        {
+          "src": "data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 96 96'><circle cx='48' cy='48' r='40' fill='%23dc2626'/><text x='48' y='58' text-anchor='middle' fill='white' font-size='20' font-family='Arial'>SOS</text></svg>",
+          "sizes": "96x96",
+          "type": "image/svg+xml"
+        }
+      ]
+    },
+    {
+      "name": "Report Hazard",
+      "short_name": "Report",
+      "description": "Report a road hazard",
+      "url": "/?action=report",
+      "icons": [
+        {
+          "src": "data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 96 96'><circle cx='48' cy='48' r='40' fill='%23f59e0b'/><text x='48' y='58' text-anchor='middle' fill='white' font-size='30' font-family='Arial'>⚠️</text></svg>",
+          "sizes": "96x96",
+          "type": "image/svg+xml"
+        }
+      ]
+    }
+  ],
+  "screenshots": [
+    {
+      "src": "data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 540 720'><rect width='540' height='720' fill='%23f8fafc'/><rect x='20' y='20' width='500' height='80' rx='12' fill='%23dc2626'/><text x='270' y='70' text-anchor='middle' fill='white' font-size='24' font-family='Arial'>NavRaksha</text><rect x='20' y='120' width='240' height='150' rx='12' fill='white' stroke='%23e5e7eb'/><text x='140' y='150' text-anchor='middle' fill='%23374151' font-size='16' font-family='Arial'>GPS Status</text><rect x='280' y='120' width='240' height='150' rx='12' fill='white' stroke='%23e5e7eb'/><text x='400' y='150' text-anchor='middle' fill='%23374151' font-size='16' font-family='Arial'>Safety Zone</text><rect x='20' y='290' width='500' height='300' rx='12' fill='white' stroke='%23e5e7eb'/><text x='270' y='320' text-anchor='middle' fill='%23374151' font-size='16' font-family='Arial'>Live Map</text></svg>",
+      "sizes": "540x720",
+      "type": "image/svg+xml",
+      "form_factor": "narrow"
+    }
+  ],
+  "related_applications": [],
+  "prefer_related_applications": false,
+  "protocol_handlers": [
+    {
+      "protocol": "web+navraksha",
+      "url": "/?action=%s"
+    }
+  ],
+  "share_target": {
+    "action": "/share",
+    "method": "POST",
+    "enctype": "multipart/form-data",
+    "params": {
+      "title": "title",
+      "text": "text",
+      "url": "url"
+    }
+  }
+}

@@ -1,0 +1,203 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>NavRaksha - Your Road Safety Companion</title>
+    <meta name="description" content="Digital companion for road safety and emergency assistance">
+    <meta name="theme-color" content="#dc2626">
+    
+    <link rel="manifest" href="manifest.json">
+    
+    <link rel="icon" type="image/png" sizes="192x192" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><circle cx='50' cy='50' r='40' fill='%23dc2626'/><text x='50' y='60' text-anchor='middle' fill='white' font-size='40' font-family='Arial'>🛡️</text></svg>">
+    
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
+    
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    
+    <script src="https://cdn.jsdelivr.net/npm/qrcode@1.5.3/build/qrcode.min.js"></script>
+    
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <header class="header" role="banner">
+        <div class="header-content">
+            <div class="logo">
+                <span class="logo-icon">🛡️</span>
+                <h1>NavRaksha</h1>
+            </div>
+            <div class="header-controls">
+                <button id="themeToggle" class="icon-btn" aria-label="Toggle theme">🌙</button>
+                <button id="accessibilityToggle" class="icon-btn" aria-label="Toggle high contrast">♿</button>
+                <div class="status-indicator" id="networkStatus">
+                    <span class="status-dot online"></span>
+                    <span class="status-text">Online</span>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <main class="main-content" role="main">
+        <section class="hero" id="heroSection">
+            <div class="hero-background"></div>
+            <div class="hero-content">
+                <h2>Stay Safe on Every Journey</h2>
+                <p>Your digital companion for road safety and emergency assistance</p>
+                <div class="hero-stats">
+                    <div class="stat">
+                        <span class="stat-number" id="activeUsers">1,247</span>
+                        <span class="stat-label">Active Users</span>
+                    </div>
+                    <div class="stat">
+                        <span class="stat-number" id="emergenciesHandled">89</span>
+                        <span class="stat-label">Emergencies Today</span>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section class="dashboard" id="dashboard">
+            <div class="dashboard-grid">
+                <div class="card" id="gpsCard">
+                    <div class="card-header">
+                        <h3>📍 GPS Status</h3>
+                        <div class="status-badge" id="gpsStatus">Searching...</div>
+                    </div>
+                    <div class="card-content">
+                        <div class="location-info" id="locationInfo">
+                            <p>Waiting for location...</p>
+                        </div>
+                        <div class="accuracy-meter">
+                            <label>Accuracy: <span id="accuracyValue">--</span>m</label>
+                            <div class="meter">
+                                <div class="meter-fill" id="accuracyMeter"></div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="card" id="safetyZoneCard">
+                    <div class="card-header">
+                        <h3>🛡️ Safety Zone</h3>
+                        <button class="btn-secondary" id="setSafetyZone">Set Zone</button>
+                    </div>
+                    <div class="card-content">
+                        <div class="zone-controls">
+                            <label for="zoneRadius">Radius: <span id="radiusValue">500</span>m</label>
+                            <input type="range" id="zoneRadius" min="100" max="2000" value="500" step="50">
+                        </div>
+                        <div class="zone-status" id="zoneStatus">
+                            <span class="zone-indicator safe">✅ Inside Safe Zone</span>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="card" id="emergencyCard">
+                    <div class="card-header">
+                        <h3>🚨 Emergency</h3>
+                        <div class="emergency-status" id="emergencyStatus">Ready</div>
+                    </div>
+                    <div class="card-content">
+                        <div class="emergency-actions">
+                            <button class="btn-emergency" id="sosButton">
+                                <span class="sos-pulse"></span>
+                                SOS
+                            </button>
+                            <button class="btn-secondary" id="voiceSosToggle">🎤 Voice SOS</button>
+                        </div>
+                        <div class="last-check" id="lastSafetyCheck">
+                            Last check: Never
+                        </div>
+                    </div>
+                </div>
+
+                <div class="card chart-card" id="analyticsCard">
+                    <div class="card-header">
+                        <h3>📊 Safety Analytics</h3>
+                        <select id="chartPeriod">
+                            <option value="today">Today</option>
+                            <option value="week">This Week</option>
+                            <option value="month">This Month</option>
+                        </select>
+                    </div>
+                    <div class="card-content">
+                        <canvas id="safetyChart" width="400" height="200"></canvas>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section class="map-section" id="mapSection">
+            <div class="map-header">
+                <h3>🗺️ Live Location & Hazards</h3>
+                <div class="map-controls">
+                    <button class="btn-secondary" id="centerMap">📍 Center</button>
+                    <button class="btn-secondary" id="reportHazard">⚠️ Report</button>
+                    <button class="btn-secondary" id="toggleTraffic">🚦 Traffic</button>
+                </div>
+            </div>
+            <div class="map-container">
+                <div id="map" class="map"></div>
+                <div class="map-overlay" id="mapOverlay">
+                    <div class="overlay-item">
+                        <span class="overlay-icon">📍</span>
+                        <span>Your Location</span>
+                    </div>
+                    <div class="overlay-item">
+                        <span class="overlay-icon">⚠️</span>
+                        <span>Hazards</span>
+                    </div>
+                    <div class="overlay-item">
+                        <span class="overlay-icon">🛡️</span>
+                        <span>Safe Zone</span>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section class="safety-tips" id="safetyTips">
+            <h3>💡 Safety Tips</h3>
+            <div class="tips-carousel" id="tipsCarousel">
+                <div class="tip-card active">
+                    <div class="tip-icon">🪖</div>
+                    <h4>Wear Your Helmet</h4>
+                    <p>Always wear a properly fitted helmet when riding motorcycles or bicycles.</p>
+                </div>
+                <div class="tip-card">
+                    <div class="tip-icon">🔒</div>
+                    <h4>Buckle Up</h4>
+                    <p>Seat belts reduce the risk of death by 45% and serious injury by 50%.</p>
+                </div>
+                <div class="tip-card">
+                    <div class="tip-icon">📱</div>
+                    <h4>No Phone Zone</h4>
+                    <p>Keep your phone away while driving. Pull over safely if you must use it.</p>
+                </div>
+                <div class="tip-card">
+                    <div class="tip-icon">🌙</div>
+                    <h4>Night Driving</h4>
+                    <p>Reduce speed and increase following distance when driving at night.</p>
+                </div>
+            </div>
+            <div class="carousel-dots" id="carouselDots"></div>
+        </section>
+
+        <section class="profile-section" id="profileSection">
+            <div class="profile-card">
+                <h3>👤 Digital Safety ID</h3>
+                <div class="profile-content" id="profileContent">
+                    <button class="btn-primary" id="setupProfile">Setup Your Profile</button>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <button class="floating-sos" id="floatingSos" aria-label="Emergency SOS">
+        <span class="sos-pulse"></span>
+        <span class="sos-text">SOS</span>
+    </button>
+
+    <div class="chat-widget" id="chatWidget">
+        <div class="chat-header" id="chatHeader">
+            <span>🤖 Safety Assistant</span>
+            <button class="chat
